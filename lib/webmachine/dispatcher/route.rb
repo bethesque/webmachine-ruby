@@ -120,7 +120,7 @@ module Webmachine
           when tokens.empty?
             return false
           when Regexp === spec.first
-            matches = spec.first.match URI.decode(tokens.first)
+            matches = spec.first.match CGI.unescape(tokens.first)
             if matches
               if spec.first.named_captures.empty?
                 bindings[:captures] = (bindings[:captures] || []) + matches.captures
@@ -134,7 +134,7 @@ module Webmachine
               return false
             end
           when Symbol === spec.first
-            bindings[spec.first] = URI.decode(tokens.first)
+            bindings[spec.first] = CGI.unescape(tokens.first)
           when spec.first == tokens.first
           else
             return false
